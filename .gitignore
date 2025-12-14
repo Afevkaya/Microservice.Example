@@ -1,0 +1,78 @@
+# Visual Studio / .NET
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.DotSettings.user
+
+# Build outputs
+**/bin/
+**/obj/
+**/out/
+publish/
+artifacts/
+
+# Rider (JetBrains)
+.idea/
+*.sln.iml
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/shelf/
+.idea/**/libraries/
+.rider/
+
+# ReSharper / JetBrains caches
+_ReSharper*/
+*.DotSettings.user
+*.ReSharper*/
+
+# NuGet
+*.nupkg
+packages/
+.nuget/packages/
+
+# Test results / coverage
+TestResults/
+*.coverage
+*.coveragexml
+coverage*.xml
+coverage.opencover.xml
+
+# ASP.NET / app settings / secrets
+local.settings.json
+secrets.json
+secrets.*.json
+appsettings.*.Local.json
+appsettings.*.Local.*
+
+# User secrets (global path)
+%APPDATA%/Microsoft/UserSecrets/**
+
+# Logs, temp, and misc
+*.log
+*.tmp
+*.temp
+*.cache
+*.pid
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# VS Code
+.vscode/
+
+# dotnet tooling / legacy
+project.lock.json
+project.fragment.lock.json
+
+# Certificates
+*.pfx
+*.cer
+
+# Node/npm (if present in repo)
+node_modules/
+
+# Environment files
+.env
+.env.* 
