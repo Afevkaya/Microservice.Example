@@ -5,7 +5,7 @@ namespace Payment.Application.Features;
 
 public class PaymentService(IMessagePublisher publisher): IPaymentService
 {
-    public async Task ProcessPaymentAsync(StockReservedEvent stockReservedEvent)
+    public async Task HandleStockReservedAsync(StockReservedEvent stockReservedEvent)
     {
         if (true)
         {
@@ -13,6 +13,15 @@ public class PaymentService(IMessagePublisher publisher): IPaymentService
             await publisher.PublishAsync(new PaymentCompletedEvent
             {
                 OrderId = stockReservedEvent.OrderId
+            });
+            Console.WriteLine("Payment completed");
+        }
+        else
+        {
+            await publisher.PublishAsync(new PaymentFailedEvent
+            {
+                OrderId = stockReservedEvent.OrderId,
+                Message = "Payment failed due to insufficient funds."
             });
         }
     }

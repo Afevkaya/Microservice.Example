@@ -8,4 +8,5 @@ public interface IOrderService
     Task CreateOrderAsync(CreateOrderRequest request);
     Task HandlePaymentCompletedAsync(PaymentCompletedEvent paymentCompletedEvent);
     Task HandleStockNotReservedAsync(StockNotReservedEvent stockNotReservedEvent);
+    Task HandlePaymentFailedAsync(PaymentFailedEvent paymentFailedEvent);
 }

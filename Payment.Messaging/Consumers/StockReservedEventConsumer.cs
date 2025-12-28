@@ -8,6 +8,6 @@ public class StockReservedEventConsumer(IPaymentService paymentService): IConsum
 {
     public async Task Consume(ConsumeContext<StockReservedEvent> context)
     {
-        await paymentService.ProcessPaymentAsync(context.Message);
+        await paymentService.HandleStockReservedAsync(context.Message);
     }
 }

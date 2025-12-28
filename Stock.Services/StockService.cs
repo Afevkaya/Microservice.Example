@@ -76,6 +76,7 @@ public class StockService(IStockRepository stockRepository,IMessageSender messag
             };
 
             await messageSender.SendAsync(RabbitMqSettings.Stock_OrderCreatedEventQueue, stockReservedEvent);
+            await Console.Out.WriteLineAsync($"Stock reserved for order {orderCreatedEvent.OrderId}");
         }
         else
         {
@@ -87,6 +88,7 @@ public class StockService(IStockRepository stockRepository,IMessageSender messag
             };
             
             await messagePublisher.PublishAsync(stockNotReservedEvent);
+            await Console.Out.WriteLineAsync($"Not enough stock for order {orderCreatedEvent.OrderId}");
         }
     }
 }

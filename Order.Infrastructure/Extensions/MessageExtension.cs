@@ -16,11 +16,13 @@ public static class MessageExtension
         {
             config.AddConsumer<PaymentCompletedEventConsumer>();
             config.AddConsumer<StockNotReservedEventConsumer>();
+            config.AddConsumer<PaymentFailedEventConsumer>();
             config.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(configuration["RabbitMq"]);
                 cfg.ReceiveEndpoint(RabbitMqSettings.Order_PaymentCompletedEventQueue,e => e.ConfigureConsumer<PaymentCompletedEventConsumer>(context));
                 cfg.ReceiveEndpoint(RabbitMqSettings.Order_StockNotReservedEventQueue,e => e.ConfigureConsumer<StockNotReservedEventConsumer>(context));
+                cfg.ReceiveEndpoint(RabbitMqSettings.Order_PaymentFailedEventQueue,e => e.ConfigureConsumer<PaymentFailedEventConsumer>(context));
             });
         });
         services.AddScoped<IMessagePublisher, MassTransitPublisher>();   

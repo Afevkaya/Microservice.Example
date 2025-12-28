@@ -64,4 +64,18 @@ public class OrderService(IOrderRepository orderRepository, IMessagePublisher pu
         order.Status = OrderStatus.Failed;
         await orderRepository.UpdateOrderAsync(order);
     }
+
+    public async Task HandlePaymentFailedAsync(PaymentFailedEvent paymentFailedEvent)
+    {
+        var order = await orderRepository.GetOrderAsync(paymentFailedEvent.OrderId);
+        if (order is null)
+        {
+            throw new Exception("Order not found");
+        }
+
+        order.Status = OrderStatus.Failed;
+        await orderRepository.UpdateOrderAsync(order);
+    }
+
+    
 }

@@ -4,5 +4,5 @@ namespace Payment.Application.Features;
 
 public interface IPaymentService
 {
-    Task ProcessPaymentAsync(StockReservedEvent stockReservedEvent);
+    Task HandleStockReservedAsync(StockReservedEvent stockReservedEvent);
 }

@@ -11,10 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddMongoDb().AddRepositories().AddServices().AddMessageBus(builder.Configuration);
 builder.Services.AddSwaggerGen();
 
-var serviceProvider = builder.Services.BuildServiceProvider();
-using var scope = serviceProvider.CreateScope();
-var stockService = scope.ServiceProvider.GetRequiredService<IStockService>();
-await stockService.InitializeStockAsync();
+// var serviceProvider = builder.Services.BuildServiceProvider();
+// using var scope = serviceProvider.CreateScope();
+// var stockService = scope.ServiceProvider.GetRequiredService<IStockService>();
+// await stockService.InitializeStockAsync();
 
 var app = builder.Build();
 
