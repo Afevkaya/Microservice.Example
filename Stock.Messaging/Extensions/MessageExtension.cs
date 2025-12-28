@@ -1,10 +1,10 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Order.Application.Contracts.Messaging;
-using Order.Infrastructure.Messaging.MassTransit;
+using Shared;
+using Stock.Messaging.Consumers;
 
-namespace Order.Infrastructure.Extensions;
+namespace Stock.Messaging.Extensions;
 
 public static class MessageExtension
 {
@@ -12,12 +12,15 @@ public static class MessageExtension
     {
         services.AddMassTransit(config =>
         {
+            config.AddConsumer<OrderCreatedEventConsumer>();
             config.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(configuration["RabbitMq"]);
+                cfg.ReceiveEndpoint(RabbitMqSettings.Stock_OrderCreatedEventQueue, 
+                    c => c.ConfigureConsumer<OrderCreatedEventConsumer>(context));
             });
         });
-        services.AddScoped<IMessagePublisher, MassTransitPublisher>();   
+        
         return services;
     }
 }
