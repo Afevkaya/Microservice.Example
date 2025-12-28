@@ -41,7 +41,7 @@ public class OrderService(IOrderRepository orderRepository, IMessagePublisher pu
         await publisher.PublishAsync(orderCreatedEvent);
         
     }
-    public async Task ProcessPaymentAsync(PaymentCompletedEvent paymentCompletedEvent)
+    public async Task HandlePaymentCompletedAsync(PaymentCompletedEvent paymentCompletedEvent)
     {
         var order = await orderRepository.GetOrderAsync(paymentCompletedEvent.OrderId);
         if (order is null)
@@ -50,6 +50,18 @@ public class OrderService(IOrderRepository orderRepository, IMessagePublisher pu
         }
 
         order.Status = OrderStatus.Completed;
+        await orderRepository.UpdateOrderAsync(order);
+    }
+
+    public async Task HandleStockNotReservedAsync(StockNotReservedEvent stockNotReservedEvent)
+    {
+        var order = await orderRepository.GetOrderAsync(stockNotReservedEvent.OrderId);
+        if (order is null)
+        {
+            throw new Exception("Order not found");
+        }
+
+        order.Status = OrderStatus.Failed;
         await orderRepository.UpdateOrderAsync(order);
     }
 }

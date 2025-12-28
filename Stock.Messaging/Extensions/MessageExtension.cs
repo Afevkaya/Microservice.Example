@@ -24,7 +24,7 @@ public static class MessageExtension
         });
 
         services.AddScoped<IMessageSender, MassTransitMessageSender>();
-        
+        services.AddScoped<IMessagePublisher, MassTransitMessagePublisher>();
         return services;
     }
 }

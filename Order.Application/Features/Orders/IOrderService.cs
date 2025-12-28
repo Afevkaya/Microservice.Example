@@ -6,5 +6,6 @@ namespace Order.Application.Features.Orders;
 public interface IOrderService
 {
     Task CreateOrderAsync(CreateOrderRequest request);
-    Task ProcessPaymentAsync(PaymentCompletedEvent paymentCompletedEvent);
+    Task HandlePaymentCompletedAsync(PaymentCompletedEvent paymentCompletedEvent);
+    Task HandleStockNotReservedAsync(StockNotReservedEvent stockNotReservedEvent);
 }

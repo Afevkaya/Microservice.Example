@@ -5,7 +5,7 @@ using Stock.Services.Messaging;
 
 namespace Stock.Services;
     
-public class StockService(IStockRepository stockRepository,IMessageSender messageSender) : IStockService
+public class StockService(IStockRepository stockRepository,IMessageSender messageSender, IMessagePublisher messagePublisher) : IStockService
 {
     public async Task InitializeStockAsync()
     {
@@ -79,7 +79,14 @@ public class StockService(IStockRepository stockRepository,IMessageSender messag
         }
         else
         {
-            // Geçersiz sipariş için işlemler (ör. loglama, bildirim vs.)
+            StockNotReservedEvent stockNotReservedEvent = new()
+            {
+                BuyerId = orderCreatedEvent.BuyerId,
+                OrderId = orderCreatedEvent.OrderId,
+                Message = "Not enough stock"
+            };
+            
+            await messagePublisher.PublishAsync(stockNotReservedEvent);
         }
     }
 }

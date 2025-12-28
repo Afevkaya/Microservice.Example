@@ -8,6 +8,6 @@ public class PaymentCompletedEventConsumer(IOrderService orderService): IConsume
 {
     public async Task Consume(ConsumeContext<PaymentCompletedEvent> context)
     {
-        await orderService.ProcessPaymentAsync(context.Message);
+        await orderService.HandlePaymentCompletedAsync(context.Message);
     }
 }
