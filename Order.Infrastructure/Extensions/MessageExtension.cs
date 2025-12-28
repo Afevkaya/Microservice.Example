@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Order.Application.Contracts.Messaging;
+using Order.Infrastructure.Messaging.Consumers;
 using Order.Infrastructure.Messaging.MassTransit;
+using Shared;
 
 namespace Order.Infrastructure.Extensions;
 
@@ -12,9 +14,11 @@ public static class MessageExtension
     {
         services.AddMassTransit(config =>
         {
+            config.AddConsumer<PaymentCompletedEventConsumer>();
             config.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(configuration["RabbitMq"]);
+                cfg.ReceiveEndpoint(RabbitMqSettings.Order_PaymentCompletedEventQueue,e => e.ConfigureConsumer<PaymentCompletedEventConsumer>(context));
             });
         });
         services.AddScoped<IMessagePublisher, MassTransitPublisher>();   

@@ -11,7 +11,7 @@ public class OrderService(IOrderRepository orderRepository, IMessagePublisher pu
 {
     public async Task CreateOrderAsync(CreateOrderRequest request)
     {
-        var order = new Domain.Entites.Order
+        var order = new Domain.Entities.Order
         {
             Id = Guid.NewGuid(),
             BuyerId = request.BuyerId,
@@ -36,8 +36,20 @@ public class OrderService(IOrderRepository orderRepository, IMessagePublisher pu
                 ProductId = oi.ProductId,
                 Count = oi.Count,
             }).ToList(),
+            TotalPrice = order.TotalPrice
         };
         await publisher.PublishAsync(orderCreatedEvent);
         
+    }
+    public async Task ProcessPaymentAsync(PaymentCompletedEvent paymentCompletedEvent)
+    {
+        var order = await orderRepository.GetOrderAsync(paymentCompletedEvent.OrderId);
+        if (order is null)
+        {
+            throw new Exception("Order not found");
+        }
+
+        order.Status = OrderStatus.Completed;
+        await orderRepository.UpdateOrderAsync(order);
     }
 }

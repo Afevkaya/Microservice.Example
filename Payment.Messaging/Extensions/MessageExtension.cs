@@ -1,12 +1,12 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Payment.Application.Messaging;
+using Payment.Messaging.Consumers;
+using Payment.Messaging.Publishers;
 using Shared;
-using Stock.Messaging.Consumers;
-using Stock.Messaging.Publishers;
-using Stock.Services.Messaging;
 
-namespace Stock.Messaging.Extensions;
+namespace Payment.Messaging.Extensions;
 
 public static class MessageExtension
 {
@@ -14,16 +14,16 @@ public static class MessageExtension
     {
         services.AddMassTransit(config =>
         {
-            config.AddConsumer<OrderCreatedEventConsumer>();
+            config.AddConsumer<StockReservedEventConsumer>();
             config.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(configuration["RabbitMq"]);
-                cfg.ReceiveEndpoint(RabbitMqSettings.Stock_OrderCreatedEventQueue, 
-                    c => c.ConfigureConsumer<OrderCreatedEventConsumer>(context));
+                cfg.ReceiveEndpoint(RabbitMqSettings.Payment_StockReservedEventQueue, 
+                    c => c.ConfigureConsumer<StockReservedEventConsumer>(context));
             });
         });
 
-        services.AddScoped<IMessageSender, MassTransitMessageSender>();
+        services.AddScoped<IMessagePublisher, MassTransitPublisher>();
         
         return services;
     }

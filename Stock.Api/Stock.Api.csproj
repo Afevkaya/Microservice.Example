@@ -14,10 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Stock.Messaging\Stock.Messaging.csproj" />
       <ProjectReference Include="..\Stock.Services\Stock.Services.csproj" />
     </ItemGroup>

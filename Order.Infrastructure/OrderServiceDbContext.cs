@@ -9,6 +9,6 @@ public class OrderServiceDbContext:DbContext
     {
         
     }
-    public DbSet<Domain.Entites.Order> Orders { get; set; }
+    public DbSet<Domain.Entities.Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
 }

@@ -1,9 +1,11 @@
-﻿using Shared.Events;
+﻿using Shared;
+using Shared.Events;
 using Stock.Repositories;
-    
+using Stock.Services.Messaging;
+
 namespace Stock.Services;
     
-public class StockService(IStockRepository stockRepository) : IStockService
+public class StockService(IStockRepository stockRepository,IMessageSender messageSender) : IStockService
 {
     public async Task InitializeStockAsync()
     {
@@ -65,6 +67,15 @@ public class StockService(IStockRepository stockRepository) : IStockService
             {
                 await stockRepository.UpdateStockAsync(stock.ProductId, stock);
             }
+
+            StockReservedEvent stockReservedEvent = new()
+            {
+                BuyerId = orderCreatedEvent.BuyerId,
+                OrderId = orderCreatedEvent.OrderId,
+                TotalPrice = orderCreatedEvent.TotalPrice
+            };
+
+            await messageSender.SendAsync(RabbitMqSettings.Stock_OrderCreatedEventQueue, stockReservedEvent);
         }
         else
         {
